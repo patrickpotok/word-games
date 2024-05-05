@@ -1,0 +1,236 @@
+@font-face {
+  font-family: "NYT Franklin 300";
+  src: url('../fonts/nyt-franklin-300.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "NYT Franklin 500";
+  src: url('../fonts/nyt-franklin-500.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "NYT Franklin 600";
+  src: url('../fonts/nyt-franklin-600.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "NYT Franklin 700";
+  src: url('../fonts/nyt-franklin-700.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "NYT Karnak 400";
+  src: url('../fonts/nyt-karnak-400.ttf') format('truetype');
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  width: 100vw;
+  background: #121213;
+  color: #d7dadc;
+  overflow: auto;
+}
+
+.header {
+  padding: 1.6em;
+}
+
+#title {
+    font-family: "NYT Karnak 400";
+    font-size: 42px;
+    padding-right: 3.5em;
+}
+
+#subtitle {
+    font-family: "NYT Franklin 300";
+    font-size: 28px;
+    font-weight: lighter;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #3a3a3c;
+  margin-bottom: 24px;
+}
+
+.words {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.word {
+  display: flex;
+  margin-top: 5px;
+}
+
+.letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px #3a3a3c;
+  width: 58px;
+  height: 58px;
+  font-family: "NYT Franklin 700";
+  font-size: 2rem;
+  font-weight: bold;
+  transform-origin: center;
+  user-select: none;
+}
+.letter:not(:last-child) {
+  margin-right: 5px;
+}
+.letter.correct {
+  background: #538d4e;
+  border-color: #538d4e;
+}
+.letter.semi {
+  background: #b59f3b;
+  border-color: #b59f3b;
+}
+.letter.incorrect {
+  background: #3a3a3c;
+  border-color: #3a3a3c;
+}
+.word:not(.attempted) .letter:not(:empty) {
+  border-color: #565758;
+}
+
+
+button {
+  cursor: pointer;
+  outline: none;
+  border: unset;
+}
+
+.game-over .keyboard {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.2s ease-in-out;
+}
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.keyboard-button {
+  font-family: "NYT Franklin 700";
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  height: 44px;
+  min-width: 44px;
+  margin: 2px;
+  color: rgb(248, 248, 248);
+  background: rgb(129, 131, 132);
+  border-radius: 4px;
+  transition: background 0.1s ease-in;
+}
+@media (max-width: 490px) {
+  .keyboard-button {
+    height: 52px;
+    min-width: 31px;
+  }
+}
+.keyboard-button.correct {
+  background: #538d4e !important;
+}
+.keyboard-button.semi {
+  background: #b59f3b;
+}
+.keyboard-button.incorrect {
+  background: #3a3a3c;
+}
+.keyboard-button.larger {
+  padding: 0 18px;
+  font-size: 12px;
+}
+@media (max-width: 360px) {
+  .keyboard-button.larger {
+    padding: 0 6px;
+  }
+}
+
+.end-actions {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-auto-flow: column;
+  grid-column-gap: 32px;
+  grid-row-gap: 2px;
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  font-family: "NYT Franklin 600";
+}
+.game-over .end-actions {
+  opacity: 1;
+  pointer-events: unset;
+  transition: opacity 0.2s ease-in;
+}
+.end-actions > span:first-of-type {
+  font-size: 28px;
+  font-weight: bold;
+}
+.end-actions > span:last-of-type {
+  font-size: 12px;
+}
+
+.toast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #d7dadc;
+  color: black;
+  padding: 16px;
+  font-family: "NYT Franklin 700";
+  font-weight: bolder;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 1000;
+  position: fixed;
+  top: 15vh;
+  left: 50vw;
+  animation: toast-birth 0.2s forwards;
+  transform-origin: center;
+  width: auto;
+}
+@keyframes toast-birth {
+  0% { transform: translateX(-50%); }
+  80% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+.share-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #3f7ad2;
+  padding: 12px 24px 14px;
+  white-space: pre;
+  text-transform: uppercase;
+  font-family: "NYT Franklin 700";
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+  font-family: inherit;
+  border-radius: 4px;
+  grid-row: span 2;
+}
