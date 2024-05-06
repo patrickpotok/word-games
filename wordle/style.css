@@ -30,6 +30,7 @@ body {
   margin: 0;
   background: #121213;
   color: #d7dadc;
+  overflow: hidden;
 
   display: -webkit-flex;
   -webkit-flex-direction: column;
@@ -162,11 +163,12 @@ button {
 }
 .keyboard-button {
   flex: 1;
+  -webkit-flex: 1;
   font-family: "NYT Franklin 700";
   font-size: 1.25em;
   text-transform: uppercase;
   font-weight: bold;
-  height: 58px;
+  height: 54px;
   margin: 0 3px 0;
   color: rgb(248, 248, 248);
   background: rgb(129, 131, 132);
@@ -185,11 +187,13 @@ button {
 }
 .keyboard-button.larger {
   flex: 1.5;
+  -webkit-flex: 1.5;
   padding: 0 14px;
   font-size: 12px;
 }
 .keyboard-button.spacer {
   flex: 0.5;
+  -webkit-flex: 0.5;
   opacity: 0;
   padding: 0;
 }
@@ -197,6 +201,8 @@ button {
 .end-actions {
   display: flex;
   align-items: center;
+  display: -webkit-flex;
+  -webkit-align-items: center;
   justify-content: center;
   grid-column-gap: 32px;
   grid-row-gap: 2px;
@@ -217,6 +223,8 @@ button {
 .answer-container {
   display: flex;
   flex-direction: column;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
 }
 .answer-container > span:first-of-type {
   font-size: 28px;
