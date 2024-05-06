@@ -412,7 +412,7 @@ function getShareContent() {
   const word = document.getElementById('word-answer').innerHTML
   const wordIndex = wordsGuessable.indexOf(word.toLowerCase())
   const text = [
-    `Wordle - Kloi & Patrick's Version: ${colorMatrix.length}/${state.config.attempts}`,
+    `Wordle - K&P's Version: ${colorMatrix.length}/${state.config.attempts}`,
     ...colorMatrix,
   ].join('\n')
   return text
