@@ -38,7 +38,7 @@ body {
 }
 
 .header {
-  padding: 18px 0;
+  padding: 14px 0;
   flex-direction: column;
   border-bottom: 1px #3a3a3c solid;
   width: -webkit-fill-available;
@@ -87,6 +87,9 @@ body {
   -webkit-align-items: center;
   -webkit-flex-grow: 1;
 }
+.words > .word:first-child {
+  margin-top: 5px;
+}
 
 .word {
   display: flex;
@@ -98,8 +101,8 @@ body {
   justify-content: center;
   align-items: center;
   border: solid 2px #3a3a3c;
-  width: 54px;
-  height: 54px;
+  width: 78px;
+  height: 78px;
   font-family: "NYT Franklin 700";
   font-size: 2rem;
   font-weight: bold;
@@ -108,6 +111,12 @@ body {
 
   display: -webkit-flex;
   -webkit-align-items: center;
+}
+@media screen and (max-width: 699px) {
+  .letter {
+    width: 54px;
+    height: 54px;
+  }
 }
 .letter:not(:last-child) {
   margin-right: 5px;
@@ -171,8 +180,9 @@ button {
   font-size: 20px;
   text-transform: uppercase;
   font-weight: bold;
-  height: 54px;
+  height: 50px;
   margin: 0 3px 0;
+  padding: 0;
   color: rgb(248, 248, 248);
   background: rgb(129, 131, 132);
   border-radius: 4px;
@@ -216,7 +226,7 @@ button {
   font-family: "NYT Franklin 600";
 }
 .game-over .end-actions {
-  height: 144px;
+  height: 120px;
   opacity: 1;
   padding: 24px 58px;
   pointer-events: unset;
