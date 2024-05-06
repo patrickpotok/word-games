@@ -159,6 +159,7 @@ button {
   display: -webkit-flex;
   margin: 0 auto 6px;
   width: 100%;
+  width: -webkit-fill-available;
   touch-action: manipulation;
 }
 .keyboard-button {
