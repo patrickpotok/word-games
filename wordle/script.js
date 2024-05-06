@@ -193,7 +193,7 @@ function setupKeyboard() {
     child.remove()
   }
 
-  let layout = ['qwertyuiop', 'asdfghjkl', '#zxcvbnm!']
+  let layout = ['qwertyuiop', '-asdfghjkl-', '#zxcvbnm!']
   for (let row of layout) {
     let keyboardRow = document.createElement('div')
     keyboardRow.classList.add('keyboard-row')
@@ -205,6 +205,9 @@ function setupKeyboard() {
       } else if (letter === '!') {
         letter = 'Backspace'
         extraClass = 'larger'
+      } else if (letter === '-') {
+        letter = ''
+        extraClass = 'spacer'
       }
       let keyboardBtn = document.createElement('button')
       keyboardBtn.classList.add('keyboard-button', 'key-' + letter.toLowerCase())
@@ -345,8 +348,6 @@ function makeAttempt(word) {
   const hintsPromise = addHints(div)
   if (isGameOver()) {
     hintsPromise.then(() => setTimeout(() => onEndGame(), 500))
-  } else {
-    hintsPromise.then(() => setupCandidatesLeft())
   }
 }
 
@@ -418,38 +419,32 @@ function getShareContent() {
 }
 
 async function writeToClipboard(content) {
-  let success = false
-  try {
-    const result = await navigator.permissions.query({ name: 'clipboard-write' })
-    if (result.state === 'granted') {
-      await navigator.clipboard.writeText(content)
-      success = true
-    } else {
-      throw new Error('forbidden')
-    }
-  } catch (err) {
-  }
-  if (!success) {
-    const element = document.createElement('div')
-    element.innerHTML = content
-    Object.assign(element.style, {
-      opacity: 0,
-      pointerEvents: 'none',
-      position: 'fixed',
-      transform: 'translateX(-100%)',
-      whiteSpace: 'pre'
-    })
-    document.body.append(element)
-    const selection = window.getSelection()
-    const range = document.createRange()
-    range.selectNodeContents(element)
-    selection.removeAllRanges()
-    selection.addRange(range)
-    setTimeout(() => element.remove(), 100)
-  }
+  const textarea = document.createElement('div')
+  textarea.setAttribute('readonly', true);
+  textarea.setAttribute('contenteditable', true);
+
+  textarea.innerHTML = content
+  Object.assign(textarea.style, {
+    opacity: 0,
+    pointerEvents: 'none',
+    position: 'fixed',
+    transform: 'translateX(-100%)',
+    whiteSpace: 'pre'
+  })
+  document.body.append(textarea);
+
+  const range = document.createRange();
+  range.selectNodeContents(textarea);
+
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  result = document.execCommand('copy');
+  setTimeout(() => textarea.remove(), 100);
 }
 
-function onEndGame(toastDuration = 1.5e3) {
+function onEndGame() {
   let victory = hasWon()
   let message = victory ? 'You got it!' : 'Yikes!';
   if (!victory) {
@@ -457,7 +452,7 @@ function onEndGame(toastDuration = 1.5e3) {
     toastDuration *= 2
   }
 
-  displayToast(message, toastDuration)
+  displayToast(message)
   document.body.classList.add('game-over')
 }
 
