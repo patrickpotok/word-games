@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icons/connections.svg" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+    <title>Connections - Kloi & Patrick's Version 🌸</title>
+  </head>
+
+  <body>
+    <div class="header">
+      <span id="title">Connections</span>
+      <span id="subtitle">Kloi & Patrick's Version 🌸</span>
+      <!-- <span id="date"></span> -->
+    </div>
+
+    <!-- <div class="help">
+        <div class="helpMiddle">
+            <img id="helpIcon" src="help.svg" alt="help icon">
+        </div>
+    </div> -->
+
+    <p id="notification"></p>
+
+    <p id="instructions">Find four groups of four that share a theme!</p>
+
+    <div class="board">
+      <div id="row1">
+        <div class="wordButton">
+          <button class="word col1" id="tile0">a1</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col2" id="tile1">a2</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col3" id="tile2">a3</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col4" id="tile3">a4</button>
+        </div>
+      </div>
+
+      <div id="row2">
+        <div class="wordButton">
+          <button class="word col1" id="tile4">b1</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col2" id="tile5">b2</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col3" id="tile6">b3</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col4" id="tile7">b4</button>
+        </div>
+      </div>
+
+      <div id="row3">
+        <div class="wordButton">
+          <button class="word col1" id="tile8">c1</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col2" id="tile9">c2</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col3" id="tile10">c3</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col4" id="tile11">c4</button>
+        </div>
+      </div>
+
+      <div id="row4">
+        <div class="wordButton">
+          <button class="word col1" id="tile12">d1</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col2" id="tile13">d2</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col3" id="tile14">d3</button>
+        </div>
+        <div class="wordButton">
+          <button class="word col4" id="tile15">d4</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <p id="mistakesText">Mistakes remaining:</p>
+      <span class="life" id="life1"></span>
+      <span class="life" id="life2"></span>
+      <span class="life" id="life3"></span>
+      <span class="life" id="life4"></span>
+    </div>
+
+    <div class="tools">
+      <button class="toolButtons" id="shuffle">Shuffle</button>
+      <button class="toolButtons" id="deselect">Deselect All</button>
+      <button class="toolButtons" id="submit">Submit</button>
+    </div>
+
+    <div class="shareContainer"></div>
+  </body>
+
+  <script src="script.js"></script>
+</html>
