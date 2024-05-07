@@ -148,8 +148,8 @@ function buttonOff(wButton) {
 
 // Select Tile
 function select(wButton) {
-  wButton.style.transition = "all .3s ease-in-out";
-  wButton.style.transform = "scale(0.9)";
+  // wButton.style.transition = "all .3s ease-in-out";
+  // wButton.style.transform = "scale(0.9)";
 
   if (
     wButton.style.backgroundColor == "rgb(239, 239, 230)" &&
