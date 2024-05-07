@@ -30,7 +30,6 @@ for (let i = 0; i < words.length; i++) {
   words[i].addEventListener("mouseleave", function () {
     onMouseUp(words[i]);
   });
-  words[i].style.position = "relative";
   words[i].style.zIndex = "1";
 }
 document.getElementById("shuffle").addEventListener("mousedown", function () {
@@ -109,8 +108,6 @@ function reset() {
 function onMouseUp(wButton) {
   wButton.style.transition = "";
   wButton.style.transform = "";
-  wButton.style.width = "100%";
-  wButton.style.height = "100%";
 }
 
 function toolMouseDown(wButton) {

@@ -25,6 +25,13 @@
 
 body {
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  -webkit-align-items: center;
 }
 
 .header {
@@ -52,6 +59,8 @@ body {
 }
 
 #instructions {
+  display: flex;
+  display: -webkit-flex;
   text-align: center;
   font-size: 18px;
   font-family: "NYT Franklin 500";
@@ -81,16 +90,13 @@ body {
 }
 
 .board {
-  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   flex-wrap: nowrap;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin: auto 0;
   width: 100%;
-  height: 344px;
   max-width: max-content;
   max-height: max-content;
 
@@ -109,7 +115,6 @@ body {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 86px;
   margin: 4px;
   max-width: 100vw;
@@ -135,9 +140,9 @@ body {
   background-color: #EFEFE6;
   border-radius: 6px;
   border: none;
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
+  width: 86px;
+  height: 86px;
+  font-size: 14px;
   font-family: "NYT Franklin 700";
   cursor: pointer;
   user-select: none;
@@ -149,15 +154,15 @@ body {
 }
 
 .wordButton {
-  width: 100%;
-  height: 100%;
+  flex: 1;
+  -webkit-flex: 1;
   margin: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
   user-select: none;
 
-  display: -webkit-flex;
+  display: -webkit-flex !important;
   -webkit-align-items: center;
   -webkit-user-select: none;
 }
