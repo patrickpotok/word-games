@@ -425,11 +425,11 @@ function correct() {
 
   setTimeout(() => {
     showAnswers(swap, top, row);
-  }, 1000);
 
-  if (complete.every(e => e == 1)) {
-    onEndGame();
-  }
+    if (complete.every(e => e == 1)) {
+      onEndGame();
+    }
+  }, 1000);
 }
 
 // Display answers
