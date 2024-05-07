@@ -144,12 +144,17 @@ body {
   height: 86px;
   font-size: 14px;
   font-family: "NYT Franklin 700";
+  padding: 0 8px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .longWord {
+  font-size: 12px !important;
+}
+
+.longerWord {
   font-size: 10px !important;
 }
 
@@ -169,8 +174,7 @@ body {
 
 .mistakes {
   margin: 0 auto;
-  padding: 24px 0;
-  width: 800px;
+  padding: 20px 0;
   max-width: max-content;
   display: flex;
   align-items: center;

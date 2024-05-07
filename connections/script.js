@@ -89,10 +89,15 @@ function setWords() {
 
 function addRemoveLongWord(currentWord) {
   let wordParts = currentWord.innerHTML.split(' ')
-  if (wordParts.some(e => e.length > 8) || wordParts.length > 2) {
+  if (wordParts.some(e => e.length > 9)) {
+    currentWord.classList.add('longerWord');
+    currentWord.classList.remove('longWord');
+  } else if (wordParts.some(e => e.length > 8) || wordParts.length > 2) {
     currentWord.classList.add('longWord');
+    currentWord.classList.remove('longerWord');
   } else {
     currentWord.classList.remove('longWord');
+    currentWord.classList.remove('longerWord');
   }
 }
 
