@@ -11,6 +11,7 @@ let wordList = [];
 let order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 let complete = [0, 0, 0, 0];
 let selected = [];
+let numCorrect = 0;
 let lives = 4;
 let rows = 0;
 var words = document.getElementsByClassName("word");
@@ -241,7 +242,7 @@ function shuffle() {
 }
 
 // Submit when 4 tiles selected
-function submit() {
+function submit(isAutocomplete = false) {
   if (selected.length != 4) {
     return;
   }
@@ -283,6 +284,9 @@ function submit() {
   guesses.push(rowIndexes);
 
   if (rowIndexes.every(e => e === rowIndexes[0])) {
+    if (!isAutocomplete) {
+      numCorrect++;
+    }
     setTimeout(() => {
       correct();
     }, 750);
@@ -322,7 +326,7 @@ function getShareContent() {
     decoder.decode(new Uint8Array([240, 159, 159, 166])), // Blue
     decoder.decode(new Uint8Array([240, 159, 159, 170])), // Purple
   ]
-  const colorMatrix = guesses.map(row => {
+  const colorMatrix = guesses.slice(0, numCorrect + 4).map(row => {
     return row.map(index => squareGlyphs[index] || '')
       .join('')
   })
@@ -335,6 +339,8 @@ function getShareContent() {
     score = "Good"
   } else if (lives == 1) {
     score = "Okay"
+  } else {
+    score = "Yikes"
   }
 
   const text = [
@@ -378,7 +384,7 @@ function onEndGame() {
 }
 
 function hasWon() {
-  return true;
+  return numCorrect >= 4;
 }
 
 // Show notification
@@ -425,7 +431,6 @@ function correct() {
 
   setTimeout(() => {
     showAnswers(swap, top, row);
-
     if (complete.every(e => e == 1)) {
       onEndGame();
     }
@@ -511,7 +516,7 @@ function autocompleteRow(i) {
   for (let j = i * 4; j < i * 4 + 4; j++) {
     selected.push(document.getElementById("tile" + order[j]));
   }
-  submit();
+  submit(true);
 }
 
 // Remove life on wrong answer
@@ -596,7 +601,7 @@ function getGames() {
   return [
     {
       categories: [
-        "Our go-to homemade dinners",
+        "Our go-to home dinners",
         "Our favorite trips",
         "Our favorite restaurants",
         "Our dogs (+ Bailey)",
@@ -604,8 +609,8 @@ function getGames() {
       wordList: [
         "chickpeas",
         "poke",
-        "cacio e pepe",
-        "sea bass",
+        "salmon",
+        "uber eats",
 
         "charleston",
         "phoenix",
@@ -620,7 +625,7 @@ function getGames() {
         "denver",
         "dublin",
         "roger",
-        "brodie",
+        "brody",
       ],
     }
   ];
