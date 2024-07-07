@@ -5,11 +5,12 @@ var won = false;
 var finalTime = 0;
 
 let acrossClues = {
-  0: "Clue A", // qqqqq
-  1: "Clue B", // qqqqq
-  2: "Clue C", // qqqqq
-  3: "Clue D", // qqqqq
-  4: "Clue E", // qqqqq
+  0: "Clue A", // qqqqqq
+  1: "Clue B", // qqqqqq
+  2: "Clue C", // qqqqqq
+  3: "Clue D", // qqqqqq
+  4: "Clue E", // qqqqqq
+  5: "Clue F", // qqqqqq
 };
 let downClues = {
   0: "Clue F", // .....
@@ -17,14 +18,18 @@ let downClues = {
   2: "Clue H", // .....
   3: "Clue I", // .....
   4: "Clue J", // .....
+  5: "Clue E", // .....
 };
+
+let maxRow = 5;
+let maxCol = 5;
 
 // Prepare SVG for Share Button
 const SVG_SHARE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg>';
 
 const SVG_BACKSPACE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path></svg>'
 
-let answer = Array.from("qqqqqqqqqqqqqqqqqqqqqqqqq");
+let answer = Array.from("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
 
 function onloadRender() {
   createGrid();
@@ -53,8 +58,8 @@ function convertTime(miliseconds) {
 }
 
 function createGrid() {
-  for (var i = 0; i < 5; i++) {
-    for (var j = 0; j < 5; j++) {
+  for (var i = 0; i < maxRow + 1; i++) {
+    for (var j = 0; j < maxCol + 1; j++) {
       let row = document.getElementById("row" + i);
       var box = document.createElement("div");
       box.setAttribute("id", "box" + i + j);
@@ -64,13 +69,13 @@ function createGrid() {
 
       if (i == 0) {
         box.classList.add("topEdge");
-      } else if (i == 4) {
+      } else if (i == maxCol) {
         box.classList.add("bottomEdge");
       }
 
       if (j == 0) {
         box.classList.add("leftEdge");
-      } else if (j == 4) {
+      } else if (j == maxCol) {
         box.classList.add("rightEdge");
       }
 
@@ -183,11 +188,11 @@ function highlightRow() {
   }
 
   if (directionHor) {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < maxRow; i++) {
       document.getElementById("box" + activeRow + i).classList.add("highlight");
     }
   } else {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < maxCol; i++) {
       document.getElementById("box" + i + activeCol).classList.add("highlight");
     }
   }
@@ -199,7 +204,7 @@ function updateClue() {
     if (activeRow == 0) {
       document.getElementById("clueNumber").innerText = "1a:";
     } else {
-      document.getElementById("clueNumber").innerText = (parseInt(activeRow) + 5) + ":";
+      document.getElementById("clueNumber").innerText = (parseInt(activeRow) + maxRow) + ":";
     }
   } else {
     document.getElementById("clueText").innerText = downClues[activeCol];
@@ -232,19 +237,19 @@ function onKeyPress(key) {
     box.innerHTML = "";
 
     if (boxRow == 0 && boxCol == 0) {
-      activate(document.getElementById("box44"));
+      activate(document.getElementById("box" + maxRow + maxCol));
       return;
     }
 
     if (directionHor) { // direction = horizontal
       if (boxCol == 0) {
-        newBox = "box" + (boxRow - 1) + "4";
+        newBox = "box" + (boxRow - 1) + maxCol;
       } else {
         newBox = "box" + boxRow + (boxCol - 1);
       }
     } else { // direction = vertical
       if (boxRow == 0) {
-        newBox = "box" + "4" + (boxCol - 1);
+        newBox = "box" + maxRow + (boxCol - 1);
       } else {
         newBox = "box" + (boxRow - 1) + boxCol;
       }
@@ -265,20 +270,20 @@ function onKeyPress(key) {
   }
 
   // Reset to initial box and change direction
-  if (boxRow == 4 && boxCol == 4) {
+  if (boxRow == maxRow && boxCol == maxCol) {
     directionHor = !directionHor;
     activate(document.getElementById("box00"));
     return;
   }
 
   if (directionHor) { // direction = horizontal
-    if (boxCol == 4) {
+    if (boxCol == maxCol) {
       newBox = "box" + (boxRow + 1) + "0";
     } else {
       newBox = "box" + boxRow + (boxCol + 1);
     }
   } else { // direction = vertical
-    if (boxRow == 4) {
+    if (boxRow == maxRow) {
       newBox = "box" + "0" + (boxCol + 1);
     } else {
       newBox = "box" + (boxRow + 1) + boxCol;
@@ -292,8 +297,8 @@ function onKeyPress(key) {
 
 function checkPuzzle() {
   const puzzle = [];
-  for (var i = 0; i < 5; i++) {
-    for (var j = 0; j < 5; j++) {
+  for (var i = 0; i < maxRow + 1; i++) {
+    for (var j = 0; j < maxCol + 1; j++) {
       let boxValue = document.getElementById("box" + i + j).innerHTML;
       if (boxValue == "") {
         return false
@@ -317,8 +322,8 @@ function winner() {
   removeEventListener("keyup", handleKeyboardPress);
 
   showNotification("Congratulations!\nYou solved it.");
-  for (var i = 0; i < 5; i++) {
-    for (var j = 0; j < 5; j++) {
+  for (var i = 0; i < maxRow + 1; i++) {
+    for (var j = 0; j < maxCol + 1; j++) {
       var box = document.getElementById("box" + i + j);
       box.blur();
       box.classList.remove("highlight");
