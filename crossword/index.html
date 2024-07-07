@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" href="../icons/crossword.svg" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+    <title>Crossword - Kloi & Patrick's Version 🌸</title>
+  </head>
+
+  <body onload="onloadRender()">
+    <div class="header">
+        <span id="title">Crossword</span>
+        <span id="subtitle">Kloi & Patrick's Version 🌸</span>
+    </div>
+
+    <span id="timer">00:00</span>
+
+    <p id="notification"></p>
+
+    <div class="grid">
+      <div class="row" id="row0"></div>
+      <div class="row" id="row1"></div>
+      <div class="row" id="row2"></div>
+      <div class="row" id="row3"></div>
+      <div class="row" id="row4"></div>
+    </div>
+
+    <div id="clueContainer">
+      <p id="clueNumber"></p>
+      <p id="clueText"></p>
+    </div>
+
+    <div class="keyboard"></div>
+
+    <div class="shareContainer"></div>
+
+  </body>
+  <script src="script.js"></script>
+</html>
