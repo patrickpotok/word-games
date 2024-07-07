@@ -188,11 +188,11 @@ function highlightRow() {
   }
 
   if (directionHor) {
-    for (var i = 0; i < maxRow; i++) {
+    for (var i = 0; i < maxRow + 1; i++) {
       document.getElementById("box" + activeRow + i).classList.add("highlight");
     }
   } else {
-    for (var i = 0; i < maxCol; i++) {
+    for (var i = 0; i < maxCol + 1; i++) {
       document.getElementById("box" + i + activeCol).classList.add("highlight");
     }
   }
