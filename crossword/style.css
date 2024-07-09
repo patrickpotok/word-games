@@ -130,7 +130,7 @@ body {
 }
 
 
-.grid {
+#grid {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -153,11 +153,19 @@ body {
 }
 
 .letter {
-  width: 58px;
-  height: 58px;
-  font-size: 48px;
+  width: 54px;
+  height: 54px;
+  font-size: 40px;
   text-transform: capitalize;
   text-align: center;
+}
+
+@media screen and (max-width: 699px) {
+  .letter {
+    width: 34px;
+    height: 34px;
+    font-size: 24px;
+  }
 }
 
 .letter.highlight {
@@ -167,6 +175,10 @@ body {
 
 .letter.focused {
   background-color: #ffda00;
+}
+
+.letter.disabled {
+  background-color: #000;
 }
 
 #clueContainer {
@@ -215,7 +227,7 @@ body {
 
   border-width: 1px;
   border-style: solid;
-  border-color: #d4d4d4;
+  border-color: #696969;
 
   background-position-x: left;
   background-position-y: top;
@@ -239,40 +251,49 @@ body {
   border-right-width: 0;
 }
 
-#box00 {
+#box05 {
   background-image: url('numbers/1.png');
-}
-
-#box01 {
-  background-image: url('numbers/2.png');
-}
-
-#box02 {
-  background-image: url('numbers/3.png');
-}
-
-#box03 {
-  background-image: url('numbers/4.png');
-}
-
-#box04 {
-  background-image: url('numbers/5.png');
+  background-size: 48px;
 }
 
 #box10 {
-  background-image: url('numbers/6.png');
+  background-image: url('numbers/2.png');
+  background-size: 48px;
 }
 
-#box20 {
-  background-image: url('numbers/7.png');
-}
-
-#box30 {
-  background-image: url('numbers/8.png');
+#box38 {
+  background-image: url('numbers/3.png');
+  background-size: 48px;
 }
 
 #box40 {
+  background-image: url('numbers/4.png');
+  background-size: 48px;
+}
+
+#box42 {
+  background-image: url('numbers/5.png');
+  background-size: 48px;
+}
+
+#box46 {
+  background-image: url('numbers/6.png');
+  background-size: 48px;
+}
+
+#box64 {
+  background-image: url('numbers/7.png');
+  background-size: 48px;
+}
+
+#box69 {
+  background-image: url('numbers/8.png');
+  background-size: 48px;
+}
+
+#box81 {
   background-image: url('numbers/9.png');
+  background-size: 48px;
 }
 
 .keyboard {

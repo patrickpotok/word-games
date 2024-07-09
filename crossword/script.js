@@ -1,45 +1,97 @@
 var directionHor = true;
 var activeRow = 0;
-var activeCol = 0;
+var activeCol = 5;
 var won = false;
 var finalTime = 0;
 
 let acrossClues = {
-  0: "Clue A", // qqqqqq
-  1: "Clue B", // qqqqqq
-  2: "Clue C", // qqqqqq
-  3: "Clue D", // qqqqqq
-  4: "Clue E", // qqqqqq
-  5: "Clue F", // qqqqqq
+  0: {
+    "number": "1a",
+    "text": "How we met", // HINGE
+  },
+  1: {
+    "number": "2",
+    "text": "Our favorite store", // COSTCO
+  },
+  2: {
+    "number": "4",
+    "text": "Brand of car we drive", // AUDI
+  },
+  3: {
+    "number": "6a",
+    "text": "Our favorite type of candy", // SOUR
+  },
+  4: {
+    "number": "7",
+    "text": "Clue E", // OYSTER
+  },
+  5: {
+    "number": "9",
+    "text": "What we are doing for our honeymoon", // SAFARI
+  }
 };
 let downClues = {
-  0: "Clue F", // .....
-  1: "Clue G", // .....
-  2: "Clue H", // .....
-  3: "Clue I", // .....
-  4: "Clue J", // .....
-  5: "Clue E", // .....
+  0: {
+    "number": "2",
+    "text": "Our favorite boardgame", // CATAN
+  },
+  1: {
+    "number": "5",
+    "text": "Our favorite airline", // DELTA
+  },
+  2: {
+    "number": "1d",
+    "text": "Our favorite brand of sneakers", // HOKA
+  },
+  3: {
+    "number": "3",
+    "text": "Month we started dating", // JUNE
+  },
+  4: {
+    "number": "6",
+    "text": "Our favorite date night restaurant", // SUSHI
+  },
+  5: {
+    "number": "8",
+    "text": "What we will be exchanging on Sunday", // RING
+  },
 };
 
-let maxRow = 5;
-let maxCol = 5;
+let acrossClueMapping = {};
+let downClueMapping = {};
+
+let gameboard = [
+  [ "-", "-", "-", "-", "-", "H", "I", "N", "G", "E"],
+  [ "C", "O", "S", "T", "C", "O", "-", "-", "-", "-"],
+  [ "A", "-", "-", "-", "-", "K", "-", "-", "-", "-"],
+  [ "T", "-", "-", "-", "-", "A", "-", "-", "J", "-"],
+  [ "A", "U", "D", "I", "-", "-", "S", "O", "U", "R"],
+  [ "N", "-", "E", "-", "-", "-", "U", "-", "N", "-"],
+  [ "-", "-", "L", "-", "O", "Y", "S", "T", "E", "R"],
+  [ "-", "-", "T", "-", "-", "-", "H", "-", "-", "I"],
+  [ "-", "S", "A", "F", "A", "R", "I", "-", "-", "N"],
+  [ "-", "-", "-", "-", "-", "-", "-", "-", "-", "G"],
+];
+
+let maxRow = 10;
+let maxCol = 10;
 
 // Prepare SVG for Share Button
 const SVG_SHARE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg>';
 
 const SVG_BACKSPACE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path></svg>'
 
-let answer = Array.from("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-
 function onloadRender() {
   createGrid();
+  setupClueMapping();
   setupKeyboard();
   createShareButton();
   addEventListener("keyup", handleKeyboardPress);
 
-  var startingBox = document.getElementById("box00");
+  var startingBox = document.getElementById("box05");
   refocusTo(startingBox);
-  highlightRow();
+  updateClue();
+  highlightWord();
 }
 
 var initialTime = Date.now();
@@ -58,29 +110,101 @@ function convertTime(miliseconds) {
 }
 
 function createGrid() {
-  for (var i = 0; i < maxRow + 1; i++) {
-    for (var j = 0; j < maxCol + 1; j++) {
-      let row = document.getElementById("row" + i);
+  let grid = document.getElementById("grid");
+  for (var i = 0; i < gameboard.length; i++) {
+    // Create a row div
+    let row = document.createElement("div");
+    row.setAttribute("id", "row" + i);
+    row.classList.add("row");
+    grid.append(row);
+
+    for (var j = 0; j < gameboard[i].length; j++) {
       var box = document.createElement("div");
       box.setAttribute("id", "box" + i + j);
-      box.addEventListener("click", handleActivate);
+
       box.classList.add("box");
       box.classList.add("letter");
 
+      if (gameboard[i][j] != "-") {
+        box.addEventListener("click", handleActivate);
+      } else {
+        box.classList.add("disabled");
+      }
+
       if (i == 0) {
         box.classList.add("topEdge");
-      } else if (i == maxCol) {
+      } else if (i == gameboard.length - 1) {
         box.classList.add("bottomEdge");
       }
 
       if (j == 0) {
         box.classList.add("leftEdge");
-      } else if (j == maxCol) {
+      } else if (j == gameboard[i].length - 1) {
         box.classList.add("rightEdge");
       }
 
       document.getElementById(row.id).append(box);
     }
+  }
+}
+
+function setupClueMapping() {
+  let runCount = 0;
+  let clueCount = 0;
+  for (var i = 0; i < gameboard.length; i++) {
+    for (var j = 0; j < gameboard[i].length; j++) {
+      if (gameboard[i][j] == "-") {
+        if (runCount <= 1) {
+          runCount = 0;
+          continue;
+        }
+
+        for (var z = 0; z < runCount; z++) {
+          acrossClueMapping["box" + i + (j - z - 1)] = clueCount;
+        }
+        clueCount++;
+        runCount = 0;
+        continue;
+      }
+      runCount++;
+    }
+
+    if (runCount > 1) {
+      for (var z = 0; z < runCount; z++) {
+        acrossClueMapping["box" + i + (gameboard[i].length - z - 1)] = clueCount;
+      }
+      clueCount++;
+    }
+    runCount = 0;
+  }
+
+  runCount = 0;
+  clueCount = 0;
+  for (var j = 0; j < gameboard.length; j++) {
+    for (var i = 0; i < gameboard.length; i++) {
+      if (gameboard[i][j] == "-") {
+        if (runCount <= 1) {
+          runCount = 0;
+          continue;
+        }
+
+        for (var z = 0; z < runCount; z++) {
+          downClueMapping["box" + (i - z - 1) + j] = clueCount;
+        }
+        clueCount++;
+        runCount = 0;
+        continue;
+      }
+      runCount++;
+    }
+
+    if (runCount > 1) {
+      for (var z = 0; z < runCount; z++) {
+        downClueMapping["box" + (i - z - 1) + gameboard.length] = clueCount;
+      }
+      clueCount++;
+    }
+    runCount = 0;
   }
 }
 
@@ -153,11 +277,19 @@ function activate(box) {
   refocusTo(box);
   if (box.id == ("box" + activeRow + activeCol)) {
     directionHor = !directionHor;
-  } else {
-    activeRow = box.id.charAt(3);
-    activeCol = box.id.charAt(4);
   }
-  highlightRow();
+
+  activeRow = box.id.charAt(3);
+  activeCol = box.id.charAt(4);
+
+  // Change direction back if clue not valid
+  let isValidClue = updateClue();
+  if (!isValidClue) {
+    directionHor = !directionHor;
+    updateClue();
+  }
+
+  highlightWord();
 }
 
 function getFocusedBox() {
@@ -179,41 +311,73 @@ function refocusTo(focusBox) {
   }
 }
 
-function highlightRow() {
-  updateClue();
-
+function highlightWord() {
   var highlights = document.getElementsByClassName("highlight");
   while (highlights.length) {
     highlights[0].classList.remove("highlight");
   }
 
   if (directionHor) {
-    for (var i = 0; i < maxRow + 1; i++) {
-      document.getElementById("box" + activeRow + i).classList.add("highlight");
+    // Highlight all boxes left of active box
+    for (var i = activeCol; i >= 0; i--) {
+      let boxToHighlight = document.getElementById("box" + activeRow + i);
+      if (boxToHighlight.classList.contains("disabled")) {
+        break;
+      }
+      boxToHighlight.classList.add("highlight");
+    }
+
+    // Highlight all boxes right of active box
+    for (var i = activeCol; i < maxCol; i++) {
+      let boxToHighlight = document.getElementById("box" + activeRow + i);
+      if (boxToHighlight.classList.contains("disabled")) {
+        break;
+      }
+      boxToHighlight.classList.add("highlight");
     }
   } else {
-    for (var i = 0; i < maxCol + 1; i++) {
-      document.getElementById("box" + i + activeCol).classList.add("highlight");
+    // Highlight all boxes above active box
+    for (var i = activeRow; i >= 0; i--) {
+      let boxToHighlight = document.getElementById("box" + i + activeCol);
+      if (boxToHighlight.classList.contains("disabled")) {
+        break;
+      }
+      boxToHighlight.classList.add("highlight");
+    }
+
+    // Highlight all boxes below active box
+    for (var i = activeRow; i < maxRow; i++) {
+      let boxToHighlight = document.getElementById("box" + i + activeCol);
+      if (boxToHighlight.classList.contains("disabled")) {
+        break;
+      }
+      boxToHighlight.classList.add("highlight");
     }
   }
 }
 
 function updateClue() {
+  let clue = null;
   if (directionHor) {
-    document.getElementById("clueText").innerText = acrossClues[activeRow];
-    if (activeRow == 0) {
-      document.getElementById("clueNumber").innerText = "1a:";
-    } else {
-      document.getElementById("clueNumber").innerText = (parseInt(activeRow) + maxRow) + ":";
+    let clueId = acrossClueMapping["box" + activeRow + activeCol] ?? null;
+    if (clueId == null) {
+      return false;
     }
+    clue = acrossClues[clueId] ?? null;
   } else {
-    document.getElementById("clueText").innerText = downClues[activeCol];
-    if (activeCol == 0) {
-      document.getElementById("clueNumber").innerText = "1d:";
-    } else {
-      document.getElementById("clueNumber").innerText = (parseInt(activeCol) + 1) + ":";
+    let clueId = downClueMapping["box" + activeRow + activeCol] ?? null;
+    if (clueId == null) {
+      return false;
     }
+    clue = downClues[clueId] ?? null;
   }
+
+  if (clue == null) {
+    return false;
+  }
+  document.getElementById("clueNumber").innerText = clue.number + ":";
+  document.getElementById("clueText").innerText = clue.text;
+  return true;
 }
 
 function handleKeyboardPress(event) {
@@ -296,22 +460,20 @@ function onKeyPress(key) {
 }
 
 function checkPuzzle() {
-  const puzzle = [];
-  for (var i = 0; i < maxRow + 1; i++) {
-    for (var j = 0; j < maxCol + 1; j++) {
-      let boxValue = document.getElementById("box" + i + j).innerHTML;
-      if (boxValue == "") {
-        return false
+  for (var i = 0; i < gameboard.length; i++) {
+    for (var j = 0; j < gameboard[i].length; j++) {
+      let correctLetter = gameboard[i][j];
+      if (correctLetter == "-") {
+        continue;
       }
-      puzzle.push(boxValue);
+
+      let boxValue = document.getElementById("box" + i + j).innerHTML;
+      if (correctLetter != boxValue.toUpperCase()) {
+        return false;
+      }
     }
   }
 
-  for (let i = 0; i < puzzle.length; i++) {
-    if (puzzle[i] != answer[i]) {
-      return false;
-    }
-  }
   winner();
   return true;
 }
@@ -322,8 +484,11 @@ function winner() {
   removeEventListener("keyup", handleKeyboardPress);
 
   showNotification("Congratulations!\nYou solved it.");
-  for (var i = 0; i < maxRow + 1; i++) {
-    for (var j = 0; j < maxCol + 1; j++) {
+  for (var i = 0; i < gameboard.length; i++) {
+    for (var j = 0; j < gameboard[i].length; j++) {
+      if (gameboard[i][j] == "-") {
+        continue;
+      }
       var box = document.getElementById("box" + i + j);
       box.blur();
       box.classList.remove("highlight");
