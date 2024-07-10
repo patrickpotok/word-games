@@ -602,8 +602,8 @@ function getGames() {
     {
       categories: [
         "Our go-to home dinners",
-        "Our favorite trips",
-        "Our favorite restaurants",
+        "Places we went to school",
+        "Places that are special to us",
         "Our dogs (+ Bailey)",
       ],
       wordList: [
@@ -612,15 +612,15 @@ function getGames() {
         "salmon",
         "uber eats",
 
-        "charleston",
-        "phoenix",
-        "belfast",
-        "maui",
+        "san francisco",
+        "florence",
+        "brampton",
+        "waterloo",
 
-        "misi",
-        "abcV",
-        "taco bell",
-        "the four horseman",
+        "long beach island",
+        "charleston",
+        "edinburgh",
+        "lake iseo",
 
         "denver",
         "dublin",
