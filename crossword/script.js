@@ -4,74 +4,101 @@ var activeCol = 5;
 var won = false;
 var finalTime = 0;
 
-let acrossClues = {
-  0: {
+let acrossClues = [
+  {
     "number": "1a",
-    "text": "How we met", // HINGE
+    "text": "How we met",
+    "answer": "HINGE",
+    "startPosition": "box05",
   },
-  1: {
+  {
     "number": "2",
-    "text": "Our favorite store", // COSTCO
+    "text": "Our favorite store",
+    "answer": "COSTCO",
+    "startPosition": "box10",
   },
-  2: {
+  {
     "number": "4",
-    "text": "Brand of car we drive", // AUDI
+    "text": "Brand of car we drive",
+    "answer": "AUDI",
+    "startPosition": "box40",
   },
-  3: {
+  {
     "number": "6a",
-    "text": "Our favorite type of candy", // SOUR
+    "text": "Our favorite type of candy",
+    "answer": "SOUR",
+    "startPosition": "box46",
   },
-  4: {
+  {
     "number": "7",
-    "text": "Clue E", // OYSTER
+    "text": "What we slurp",
+    "answer": "OYSTER",
+    "startPosition": "box64",
   },
-  5: {
+  {
     "number": "9",
-    "text": "What we are doing for our honeymoon", // SAFARI
+    "text": "What we are doing for our honeymoon",
+    "answer": "SAFARI",
+    "startPosition": "box81",
   }
-};
-let downClues = {
-  0: {
-    "number": "2",
-    "text": "Our favorite boardgame", // CATAN
-  },
-  1: {
-    "number": "5",
-    "text": "Our favorite airline", // DELTA
-  },
-  2: {
-    "number": "1d",
-    "text": "Our favorite brand of sneakers", // HOKA
-  },
-  3: {
-    "number": "3",
-    "text": "Month we started dating", // JUNE
-  },
-  4: {
-    "number": "6",
-    "text": "Our favorite date night restaurant", // SUSHI
-  },
-  5: {
-    "number": "8",
-    "text": "What we will be exchanging on Sunday", // RING
-  },
-};
+];
 
+let downClues = [
+  {
+    "number": "2",
+    "text": "Our favorite boardgame",
+    "answer": "CATAN",
+    "startPosition": "box10",
+  },
+  {
+    "number": "5",
+    "text": "Our favorite airline",
+    "answer": "DELTA",
+    "startPosition": "box42",
+  },
+  {
+    "number": "1d",
+    "text": "Our favorite brand of sneakers",
+    "answer": "HOKA",
+    "startPosition": "box05",
+  },
+  {
+    "number": "6d",
+    "text": "Our favorite restaurant food type",
+    "answer": "SUSHI",
+    "startPosition": "box46",
+  },
+  {
+    "number": "3",
+    "text": "Month we started dating",
+    "answer": "JUNE",
+    "startPosition": "box38",
+  },
+  {
+    "number": "8",
+    "text": "What we will give each other on Sunday",
+    "answer": "RING",
+    "startPosition": "box69",
+  },
+];
+
+let currentClueIndex = 0;
 let acrossClueMapping = {};
 let downClueMapping = {};
+let gameboard = [];
 
-let gameboard = [
-  [ "-", "-", "-", "-", "-", "H", "I", "N", "G", "E"],
-  [ "C", "O", "S", "T", "C", "O", "-", "-", "-", "-"],
-  [ "A", "-", "-", "-", "-", "K", "-", "-", "-", "-"],
-  [ "T", "-", "-", "-", "-", "A", "-", "-", "J", "-"],
-  [ "A", "U", "D", "I", "-", "-", "S", "O", "U", "R"],
-  [ "N", "-", "E", "-", "-", "-", "U", "-", "N", "-"],
-  [ "-", "-", "L", "-", "O", "Y", "S", "T", "E", "R"],
-  [ "-", "-", "T", "-", "-", "-", "H", "-", "-", "I"],
-  [ "-", "S", "A", "F", "A", "R", "I", "-", "-", "N"],
-  [ "-", "-", "-", "-", "-", "-", "-", "-", "-", "G"],
-];
+// let gameboard = [
+//   [ "-", "-", "-", "-", "-", "H", "I", "N", "G", "E"],
+//   [ "C", "O", "S", "T", "C", "O", "-", "-", "-", "-"],
+//   [ "A", "-", "-", "-", "-", "K", "-", "-", "-", "-"],
+//   [ "T", "-", "-", "-", "-", "A", "-", "-", "J", "-"],
+//   [ "A", "U", "D", "I", "-", "-", "S", "O", "U", "R"],
+//   [ "N", "-", "E", "-", "-", "-", "U", "-", "N", "-"],
+//   [ "-", "-", "L", "-", "O", "Y", "S", "T", "E", "R"],
+//   [ "-", "-", "T", "-", "-", "-", "H", "-", "-", "I"],
+//   [ "-", "S", "A", "F", "A", "R", "I", "-", "-", "N"],
+//   [ "-", "-", "-", "-", "-", "-", "-", "-", "-", "G"],
+// ];
 
 let maxRow = 10;
 let maxCol = 10;
@@ -82,6 +109,7 @@ const SVG_SHARE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="
 const SVG_BACKSPACE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path></svg>'
 
 function onloadRender() {
+  buildGameboard();
   createGrid();
   setupClueMapping();
   setupKeyboard();
@@ -107,6 +135,33 @@ function convertTime(miliseconds) {
   var minutes = Math.floor(totalSeconds / 60);
   var seconds = totalSeconds - minutes * 60;
   return (minutes < 10 ? "0" : "") + minutes + ':' + (seconds < 10 ? "0" : "") + seconds;
+}
+
+function buildGameboard() {
+  for (var i = 0; i < maxRow; i++) {
+    gameboard[i] = [];
+    for (var j = 0; j < maxCol; j++) {
+      gameboard[i][j] = "-";
+    }
+  }
+
+  for (var i = 0; i < acrossClues.length; i++) {
+    let acrossClueAnswer = acrossClues[i].answer;
+    let acrossClueStartPosition = acrossClues[i].startPosition;
+    let [clueRow, clueCol] = [parseInt(acrossClueStartPosition.charAt(3)), parseInt(acrossClueStartPosition.charAt(4))];
+    for (var j = 0; j < acrossClueAnswer.length; j++) {
+      gameboard[clueRow][clueCol + j] = acrossClueAnswer.charAt(j);
+    }
+  }
+
+  for (var i = 0; i < downClues.length; i++) {
+    let downClueAnswer = downClues[i].answer;
+    let downClueStartPosition = downClues[i].startPosition;
+    let [clueRow, clueCol] = [parseInt(downClueStartPosition.charAt(3)), parseInt(downClueStartPosition.charAt(4))];
+    for (var j = 0; j < downClueAnswer.length; j++) {
+      gameboard[clueRow + j][clueCol] = downClueAnswer.charAt(j);
+    }
+  }
 }
 
 function createGrid() {
@@ -200,7 +255,7 @@ function setupClueMapping() {
 
     if (runCount > 1) {
       for (var z = 0; z < runCount; z++) {
-        downClueMapping["box" + (i - z - 1) + gameboard.length] = clueCount;
+        downClueMapping["box" + (i - z - 1) + (gameboard.length - 1)] = clueCount;
       }
       clueCount++;
     }
@@ -358,18 +413,19 @@ function highlightWord() {
 
 function updateClue() {
   let clue = null;
+  let clueIndex = null;
   if (directionHor) {
-    let clueId = acrossClueMapping["box" + activeRow + activeCol] ?? null;
-    if (clueId == null) {
+    clueIndex = acrossClueMapping["box" + activeRow + activeCol] ?? null;
+    if (clueIndex == null) {
       return false;
     }
-    clue = acrossClues[clueId] ?? null;
+    clue = acrossClues[clueIndex] ?? null;
   } else {
-    let clueId = downClueMapping["box" + activeRow + activeCol] ?? null;
-    if (clueId == null) {
+    clueIndex = downClueMapping["box" + activeRow + activeCol] ?? null;
+    if (clueIndex == null) {
       return false;
     }
-    clue = downClues[clueId] ?? null;
+    clue = downClues[clueIndex] ?? null;
   }
 
   if (clue == null) {
@@ -377,6 +433,7 @@ function updateClue() {
   }
   document.getElementById("clueNumber").innerText = clue.number + ":";
   document.getElementById("clueText").innerText = clue.text;
+  currentClueIndex = clueIndex;
   return true;
 }
 
@@ -396,27 +453,35 @@ function onKeyPress(key) {
   var box = getFocusedBox();
   let [boxRow, boxCol] = [parseInt(box.id.charAt(3)), parseInt(box.id.charAt(4))];
 
+  let currentClue = directionHor ? acrossClues[currentClueIndex] : downClues[currentClueIndex];
+  currentClueStartPosition = currentClue.startPosition
+  let [currentClueRow, currentClueCol] = [parseInt(currentClueStartPosition.charAt(3)), parseInt(currentClueStartPosition.charAt(4))];
+
+
   // Handle deletions
   if (key === "Backspace" || key === "Delete") {
     box.innerHTML = "";
 
-    if (boxRow == 0 && boxCol == 0) {
-      activate(document.getElementById("box" + maxRow + maxCol));
+    if (boxRow == currentClueRow && boxCol == currentClueCol) {
+      if (currentClueIndex == 0) {
+        directionHor = !directionHor;
+      }
+
+      let nextClueIndex = currentClueIndex > 0
+        ? currentClueIndex - 1
+        : (directionHor ? acrossClues.length - 1 : downClues.length - 1);
+
+      let nextClue = directionHor ? acrossClues[nextClueIndex] : downClues[nextClueIndex];
+      let nextClueEndRow = directionHor ? nextClue.startPosition.charAt(3) : (parseInt(nextClue.startPosition.charAt(3)) + nextClue.answer.length - 1);
+      let nextClueEndCol = directionHor ? (parseInt(nextClue.startPosition.charAt(4)) + nextClue.answer.length - 1) : nextClue.startPosition.charAt(4);
+      activate(document.getElementById("box" + nextClueEndRow + nextClueEndCol));
       return;
     }
 
     if (directionHor) { // direction = horizontal
-      if (boxCol == 0) {
-        newBox = "box" + (boxRow - 1) + maxCol;
-      } else {
-        newBox = "box" + boxRow + (boxCol - 1);
-      }
+      newBox = "box" + boxRow + (boxCol - 1);
     } else { // direction = vertical
-      if (boxRow == 0) {
-        newBox = "box" + maxRow + (boxCol - 1);
-      } else {
-        newBox = "box" + (boxRow - 1) + boxCol;
-      }
+      newBox = "box" + (boxRow - 1) + boxCol;
     }
 
     if (newBox != "") {
@@ -433,25 +498,31 @@ function onKeyPress(key) {
     return;
   }
 
+  let currentClueAnswerLength = currentClue.answer.length;
+  let isAtWordEnd = directionHor
+    ? boxRow == currentClueRow && boxCol == (currentClueCol + currentClueAnswerLength - 1)
+    : boxRow == (currentClueRow + currentClueAnswerLength - 1) && boxCol == currentClueCol;
+
   // Reset to initial box and change direction
-  if (boxRow == maxRow && boxCol == maxCol) {
-    directionHor = !directionHor;
-    activate(document.getElementById("box00"));
+  if (isAtWordEnd) {
+    let endClueIndex = (directionHor ? acrossClues.length - 1 : downClues.length - 1);
+    if (currentClueIndex == endClueIndex) {
+      directionHor = !directionHor;
+    }
+
+    let nextClueIndex = currentClueIndex < endClueIndex
+      ? currentClueIndex + 1
+      : 0;
+
+    let nextClue = directionHor ? acrossClues[nextClueIndex] : downClues[nextClueIndex];
+    activate(document.getElementById(nextClue.startPosition));
     return;
   }
 
   if (directionHor) { // direction = horizontal
-    if (boxCol == maxCol) {
-      newBox = "box" + (boxRow + 1) + "0";
-    } else {
-      newBox = "box" + boxRow + (boxCol + 1);
-    }
+    newBox = "box" + boxRow + (boxCol + 1);
   } else { // direction = vertical
-    if (boxRow == maxRow) {
-      newBox = "box" + "0" + (boxCol + 1);
-    } else {
-      newBox = "box" + (boxRow + 1) + boxCol;
-    }
+    newBox = "box" + (boxRow + 1) + boxCol;
   }
 
   if (newBox != "") {
