@@ -31,7 +31,7 @@ let acrossClues = [
   },
   {
     "number": "7",
-    "text": "What we slurp",
+    "text": "Our favorite seafood appetizer",
     "answer": "OYSTER",
     "startPosition": "box64",
   },

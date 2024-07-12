@@ -601,21 +601,27 @@ function getGames() {
   return [
     {
       categories: [
-        "Our go-to home dinners",
-        "Places we went to school",
+        "Food chains we like",
+        "How we prefer to get around",
+        // "Places we went to school",
         "Places that are special to us",
         "Our dogs (+ Bailey)",
       ],
       wordList: [
-        "chickpeas",
-        "poke",
-        "salmon",
-        "uber eats",
+        "sweetgreen",
+        "chipotle",
+        "wawa",
+        "nobu",
 
-        "san francisco",
-        "florence",
-        "brampton",
-        "waterloo",
+        "ferry",
+        "heel toe express",
+        "subway",
+        "airplane",
+
+        // "san francisco",
+        // "florence",
+        // "brampton",
+        // "waterloo",
 
         "long beach island",
         "charleston",
