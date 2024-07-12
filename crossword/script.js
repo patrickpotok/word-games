@@ -12,7 +12,7 @@ let acrossClues = [
     "startPosition": "box05",
   },
   {
-    "number": "2",
+    "number": "2a",
     "text": "Our favorite store",
     "answer": "COSTCO",
     "startPosition": "box10",
@@ -45,7 +45,7 @@ let acrossClues = [
 
 let downClues = [
   {
-    "number": "2",
+    "number": "2d",
     "text": "Our favorite boardgame",
     "answer": "CATAN",
     "startPosition": "box10",
