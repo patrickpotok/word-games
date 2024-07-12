@@ -190,7 +190,7 @@ body {
   -webkit-align-items: center;
   -webkit-flex-direction: row;
 
-  height: 48px;
+  height: 44px;
   width: 100%;
   background-color: #a7d8ff;
   margin: 8px 0 0 0;
@@ -304,7 +304,7 @@ body {
   align-items: center;
   transition: opacity 0.2s ease-in-out;
   user-select: none;
-  padding: 8px 8px 32px;
+  padding: 8px 8px 2px;
   vertical-align: baseline;
   width: -webkit-fill-available;
 
@@ -329,7 +329,7 @@ body {
   font-size: 20px;
   text-transform: uppercase;
   font-weight: bold;
-  height: 40px;
+  height: 36px;
   margin: 0 3px 0;
   padding: 0;
   color: rgb(0, 0, 0);
